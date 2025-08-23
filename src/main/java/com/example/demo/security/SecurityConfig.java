@@ -99,6 +99,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/sports/analytics/**").permitAll()  // Allow analytics access
                 .requestMatchers("/actuator/**").permitAll()              // Allow actuator endpoints
                 
+                // ✅ CRITICAL FIX: Add debug endpoint to permitted list
+                .requestMatchers("/api/debug/**").permitAll()             // Allow debug endpoints
+                .requestMatchers("/debug/**").permitAll()                 // Allow debug endpoints (alternative path)
+                
                 // All other requests require authentication
                 .anyRequest().authenticated()
             );
