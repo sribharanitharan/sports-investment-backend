@@ -16,7 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true) // ✅ ADDED: Enable security debugging
 public class SecurityConfig {
     
     @Bean
@@ -84,8 +84,11 @@ public class SecurityConfig {
             .sessionManagement(session -> 
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
-            // Configure authorization rules
+            // Configure authorization rules - ✅ OPTIMIZED ORDER
             .authorizeHttpRequests(auth -> auth
+                // ✅ CRITICAL: Debug endpoints FIRST (most specific paths)
+                .requestMatchers("/api/debug", "/api/debug/**", "/debug", "/debug/**").permitAll()
+                
                 // Public endpoints (no authentication required)
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/public/**").permitAll()
@@ -94,14 +97,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/sports/export/**").permitAll()  // Allow export endpoints for testing
                 
                 // ✅ UPDATED: Allow these endpoints for testing (no authentication required)
-                .requestMatchers("/api/sports/schedules/**").permitAll()  // Allow schedules access
-                .requestMatchers("/api/sports/records/**").permitAll()    // Allow records access  
-                .requestMatchers("/api/sports/analytics/**").permitAll()  // Allow analytics access
+                .requestMatchers("/api/sports/schedules", "/api/sports/schedules/**").permitAll()  // Allow schedules access
+                .requestMatchers("/api/sports/records", "/api/sports/records/**").permitAll()    // Allow records access  
+                .requestMatchers("/api/sports/analytics", "/api/sports/analytics/**").permitAll()  // Allow analytics access
                 .requestMatchers("/actuator/**").permitAll()              // Allow actuator endpoints
-                
-                // ✅ CRITICAL FIX: Add debug endpoint to permitted list
-                .requestMatchers("/api/debug/**").permitAll()             // Allow debug endpoints
-                .requestMatchers("/debug/**").permitAll()                 // Allow debug endpoints (alternative path)
                 
                 // All other requests require authentication
                 .anyRequest().authenticated()
