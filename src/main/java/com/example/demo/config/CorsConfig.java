@@ -20,11 +20,11 @@ public class CorsConfig {
         
         // Allow specific origins (update with your frontend domains)
         List<String> allowedOrigins = Arrays.asList(
-            "http://localhost:3000",    // React default port
-            "http://localhost:5173",    // Vite default port
-            "http://localhost:8080",    // Same origin (for testing)
-            "https://yourdomain.com",   // Production domain
-            "https://*.infinityfree.com" // InfinityFree hosting
+            "http://localhost:3000",                               // React default port
+            "http://localhost:5173",                               // Vite default port
+            "http://localhost:8080",                               // Same origin (for testing)
+            "https://sports-investment-frontend.onrender.com",     // Your actual frontend URL
+            "https://*.onrender.com"                               // Allow all Render subdomains
         );
         
         configuration.setAllowedOriginPatterns(allowedOrigins);
