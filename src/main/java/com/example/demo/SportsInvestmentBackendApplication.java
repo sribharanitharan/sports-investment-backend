@@ -12,3 +12,4 @@ public class SportsInvestmentBackendApplication {
         SpringApplication.run(SportsInvestmentBackendApplication.class, args);
     }
 }
+
